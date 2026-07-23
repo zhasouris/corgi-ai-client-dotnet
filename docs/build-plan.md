@@ -15,13 +15,17 @@ This file tracks **progress** against that plan.
 - [x] Builds clean; xunit harness green
 - [x] `.gitignore`, `.editorconfig`, MIT license, CI workflow
 
-### Phase 1 — the shippable client (not started)
+### Phase 1 — the shippable client (in progress)
 - [ ] **SDK audit first** — verify current `OpenAI` (v2.x) and
       `Microsoft.SemanticKernel.Connectors.OpenAI` APIs; record in [sdk-notes.md](sdk-notes.md)
       **before** writing code. Both moved during the `Azure.AI.OpenAI` → `OpenAI` +
       `System.ClientModel` transition.
 - [ ] `System.ClientModel` pipeline policy: inject `X-Router-*` request headers, capture response headers
-- [ ] `CorgiAI.ClientOptions`, DI registration, keyed registration
+- [x] **OAuth client-credentials auth** (ADR 0015): `CorgiClientOptions` + `CorgiAuthOptions`,
+      `ICorgiTokenProvider` + MSAL `MsalTokenProvider` + `BearerTokenHandler`, and `AddCorgiClient`
+      wiring a named `HttpClient` that attaches the bearer. Replaces the obsolete static `ApiKey`
+      from the ADR 0014 example, which ADR 0015 removed gateway-side.
+- [~] `CorgiClientOptions`, DI registration (`AddCorgiClient`) — **done**; keyed registration pending
 - [ ] `RouterStrategy` extensible enum
 - [ ] Ambient scopes (`BeginScope`) + derived clients (`With`)
 - [ ] Decision capture: ambient `LastDecision` + `IRouterDecisionSink`
