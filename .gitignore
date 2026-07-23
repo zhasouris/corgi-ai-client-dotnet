@@ -1,0 +1,31 @@
+## .NET
+bin/
+obj/
+[Dd]ebug/
+[Rr]elease/
+*.user
+*.suo
+.vs/
+artifacts/
+*.nupkg
+*.snupkg
+
+## Test / coverage
+[Tt]est[Rr]esults/
+coverage/
+*.coverage
+*.trx
+
+## Rider / VS Code
+.idea/
+.vscode/
+
+## OS / editor
+.DS_Store
+Thumbs.db
+
+## Secrets — never commit
+*.env
+.env
+.env.*
+!.env.example

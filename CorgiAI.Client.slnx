@@ -1,0 +1,10 @@
+<Solution>
+  <Folder Name="/src/">
+    <Project Path="src/CorgiAI.Client.Extensions.DependencyInjection/CorgiAI.Client.Extensions.DependencyInjection.csproj" />
+    <Project Path="src/CorgiAI.Client.SemanticKernel/CorgiAI.Client.SemanticKernel.csproj" />
+    <Project Path="src/CorgiAI.Client/CorgiAI.Client.csproj" />
+  </Folder>
+  <Folder Name="/test/">
+    <Project Path="test/CorgiAI.Client.Tests/CorgiAI.Client.Tests.csproj" />
+  </Folder>
+</Solution>

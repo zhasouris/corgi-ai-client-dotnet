@@ -1,0 +1,41 @@
+name: ci
+
+# Build + test on every push/PR. Multi-targets net8.0 and net9.0, so CI installs
+# both runtimes (locally, tests may run against only the installed runtime).
+#
+# Actions are tag-pinned here for the scaffold; SHA-pin them to match the router
+# repo's zero-alerts posture before this goes public (docs/build-plan.md).
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  build-test:
+    name: build + test
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: |
+            8.0.x
+            9.0.x
+
+      - name: Restore
+        run: dotnet restore
+
+      - name: Format check
+        run: dotnet format --verify-no-changes
+
+      - name: Build
+        run: dotnet build --configuration Release --no-restore
+
+      - name: Test
+        run: dotnet test --configuration Release --no-build --verbosity normal

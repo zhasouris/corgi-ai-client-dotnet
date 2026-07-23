@@ -1,0 +1,13 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <!-- Core: options, pipeline policy, ambient scopes, decision capture, budget.
+       Depends only on the OpenAI SDK + System.ClientModel — NOT Semantic Kernel
+       (the core outlives an SK major version). Third-party package references
+       (OpenAI, System.ClientModel) are added in Phase 1, after the SDK API audit
+       (docs/sdk-notes.md). The scaffold is deliberately dependency-free. -->
+  <PropertyGroup>
+    <PackageId>CorgiAI.Client</PackageId>
+    <Description>Routing control for corgi-ai-gateway — configures a genuine OpenAIClient via a System.ClientModel pipeline policy. No wrapping, no subclassing.</Description>
+  </PropertyGroup>
+
+</Project>

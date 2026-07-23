@@ -1,0 +1,15 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <!-- IServiceCollection wiring and IOptions binding (AddCorgiClient, keyed
+       registration). Depends on the core + Microsoft.Extensions.DependencyInjection
+       abstractions. Those package references are added in Phase 1. -->
+  <PropertyGroup>
+    <PackageId>CorgiAI.Client.Extensions.DependencyInjection</PackageId>
+    <Description>Dependency-injection wiring for CorgiAI.Client: AddCorgiClient, keyed registration, IOptions binding.</Description>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\CorgiAI.Client\CorgiAI.Client.csproj" />
+  </ItemGroup>
+
+</Project>
