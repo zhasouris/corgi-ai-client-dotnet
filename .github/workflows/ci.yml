@@ -1,10 +1,8 @@
 name: ci
 
-# Build + test on every push/PR. Multi-targets net8.0 and net9.0, so CI installs
-# both runtimes (locally, tests may run against only the installed runtime).
-#
-# Actions are tag-pinned here for the scaffold; SHA-pin them to match the router
-# repo's zero-alerts posture before this goes public (docs/build-plan.md).
+# Build, format-check, and test on every push/PR, collecting code coverage.
+# Multi-targets net8.0 and net9.0, so CI installs both runtimes. Actions are
+# SHA-pinned (Dependabot keeps them current) to match the gateway's posture.
 
 on:
   push:
@@ -17,12 +15,12 @@ permissions:
 
 jobs:
   build-test:
-    name: build + test
+    name: build + test + coverage
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4
 
-      - uses: actions/setup-dotnet@v4
+      - uses: actions/setup-dotnet@67a3573c9a986a3f9c594539f4ab511d57bb3ce9 # v4
         with:
           dotnet-version: |
             8.0.x
@@ -37,5 +35,28 @@ jobs:
       - name: Build
         run: dotnet build --configuration Release --no-restore
 
-      - name: Test
-        run: dotnet test --configuration Release --no-build --verbosity normal
+      - name: Test + collect coverage
+        run: >
+          dotnet test --configuration Release --no-build
+          --collect:"XPlat Code Coverage"
+          --results-directory ./coverage
+          --verbosity normal
+
+      - name: Coverage summary
+        if: always()
+        run: |
+          dotnet tool install --global dotnet-reportgenerator-globaltool
+          export PATH="$PATH:$HOME/.dotnet/tools"
+          reportgenerator \
+            -reports:'coverage/**/coverage.cobertura.xml' \
+            -targetdir:coverage/report \
+            -reporttypes:'MarkdownSummaryGithub;Cobertura'
+          cat coverage/report/SummaryGithub.md >> "$GITHUB_STEP_SUMMARY"
+
+      - name: Upload coverage
+        if: always()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4
+        with:
+          name: coverage
+          path: coverage/report
+          if-no-files-found: ignore
