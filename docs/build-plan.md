@@ -26,7 +26,11 @@ This file tracks **progress** against that plan.
       wiring a named `HttpClient` that attaches the bearer. Replaces the obsolete static `ApiKey`
       from the ADR 0014 example, which ADR 0015 removed gateway-side.
 - [~] `CorgiClientOptions`, DI registration (`AddCorgiClient`) — **done**; keyed registration pending
-- [ ] `RouterStrategy` extensible enum
+- [x] `RouterStrategy` extensible enum — **done**. Mirrors the gateway's canonical strategies
+      (ADR 0021): `Best`, `CheapestCapable`, `Cheapest`, `FastestCapable`, `Fastest`; each
+      `Value` is the `X-Router-Strategy` header string verbatim. Extensible (any value
+      constructible), so the deprecated `value`/`fast` aliases can be sent if needed without
+      being first-class members (callers should prefer the canonical names)
 - [ ] Ambient scopes (`BeginScope`) + derived clients (`With`)
 - [ ] Decision capture: ambient `LastDecision` + `IRouterDecisionSink`
 - [ ] `PinAsync` with homogeneity check (needs router **R1**, **R2** — R2 is shipped)

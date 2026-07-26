@@ -88,13 +88,19 @@ never lets you hand a different one to a built `Kernel`:
 
 ```csharp
 using var scope = router.BeginScope(new RouterScopeOptions {
-    Strategy = RouterStrategy.Cost,
+    Strategy = RouterStrategy.CheapestCapable,   // → X-Router-Strategy: cheapest-capable
     Budget   = 5.00m
 });
 
 var answer   = await kernel.InvokePromptAsync("...");   // routed per the scope
 var decision = scope.LastDecision;                      // model, reason, costUsd, decisionId
 ```
+
+> **`RouterStrategy`** mirrors the gateway's strategy taxonomy
+> ([ADR 0021](https://github.com/zhasouris/corgi-ai-gateway/blob/main/docs/decisions/0021-strategy-taxonomy.md)):
+> `Best`, `CheapestCapable`, `Cheapest`, `FastestCapable`, `Fastest` — each maps 1:1 to the
+> `X-Router-Strategy` header value. The gateway also accepts `value`/`fast` as **deprecated
+> aliases** of `cheapest-capable`/`fastest-capable`.
 
 > **The `"auto"` convention.** SK requires a model id and sends it in the body; the gateway
 > reads **`"auto"`** as *"you decide."* Register the chat completion with `modelId: "auto"` —
